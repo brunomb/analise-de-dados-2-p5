@@ -1,0 +1,39 @@
+Problema 05
+========================================================
+Observando os tutoriais e analisando os dados existents sobre o problema reparei ue poucos deles focam no local de embarque, dessa forma resolvi fazer a seguinte analise:
+
+Qual local embarcou mais sobreviventes?
+--------------------------------------------------------
+
+```{r include = FALSE}
+##Importando dados
+train <- read.csv("~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/train.csv")
+```
+
+```{r include= TRUE, echo=FALSE}
+#Tabela do campo de embarque
+table(train$Embarked)
+#Proporcao do campo de embarque
+prop.table(table(train$Embarked))
+```
+A primeira vista vimos que a maioria dos passageiros embarcou em Southampton, agora veremos a proporcao de sobreviventes de cada cidade onde o passageiro embarcou:
+
+```{r include= TRUE, echo=FALSE}
+#Proporcao de sobreviventos por local de embarque
+prop.table(table(train$Embarked, train$Survived), 1)
+```
+
+```{r include= FALSE}
+library(rattle)
+library(rpart.plot)
+library(RColorBrewer)
+train <- subset(train, train$Embarked == "S" | train$Embarked == "C" | train$Embarked == "Q")
+fit <- rpart(Survived ~ Sex + Age + Embarked, data=train, method="class")
+fancyRpartPlot(fit)
+```
+
+
+
+
+
+
