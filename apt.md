@@ -1,36 +1,113 @@
+
 AD2 - Problema 05
 ========================================================
-Modificando os dados de acordo com o seguinte modelo:
+Os dados foram modificados de acordo com o seguinte modelo:
 * matricula: Matricula do aluno
 * curso: Codigo do curso
 * totalcadeira: Numero de cadeiras colocadas
 * reprovanota: Proporção de cadeiras que o aluno perdeu
 * reprovafalta: Proporção de cadeiras que o aluno perdeu por faltas
 * trancado: Proporção de cadeiras que o aluno trancou
-* periodo: Periodo de ingresso do aluno
 * media: Media das notas
 * codevasao: Codigo de evasão
 
-
+--------------------------------------------------------
+Summary dos dados de treinamento de CC e EM
 
 ```
-##    matricula     curso totalcadeira reprovadonota reprovadofalta  trancado
-## 1 299160737  14102100          6.0      0.0000000      0.0000000 0.0000000
-## 2 302160320  14102100          2.0      0.0000000      0.0000000 0.0000000
-## 3 295861763  11124100          7.0      0.1428571      0.5714286 0.1428571
-## 4 301860491  14102100          6.0      0.0000000      0.0000000 0.0000000
-## 5 298860971  11124100          6.0      0.0000000      0.0000000 0.0000000
-## 6 298860188  14102100          3.0      0.0000000      0.0000000 0.0000000
-##    perido    media codevasao
-## 1 2008.2  8.300000         0
-## 2 2009.2  7.600000         0
-## 3 2007.1  1.328571         0
-## 4 2009.1  9.200000         0
-## 5 2008.1  8.966667         0
-## 6 2008.1  7.666667         0
+##      matricula        curso      totalcadeira   reprovadonota   
+##  292860458:  1   11124100:138   Min.   :1.000   Min.   :0.0000  
+##  292860461:  1   14102100:243   1st Qu.:5.000   1st Qu.:0.0000  
+##  292860470:  1                  Median :6.000   Median :0.0000  
+##  292860473:  1                  Mean   :5.535   Mean   :0.1145  
+##  292860476:  1                  3rd Qu.:6.000   3rd Qu.:0.1667  
+##  292860479:  1                  Max.   :8.000   Max.   :0.8333  
+##  (Other)  :375                                                  
+##  reprovadofalta       trancado           perido        media      
+##  Min.   :0.00000   Min.   :0.00000   2006.1 : 49   Min.   :0.000  
+##  1st Qu.:0.00000   1st Qu.:0.00000   2006.2 : 43   1st Qu.:5.083  
+##  Median :0.00000   Median :0.00000   2008.1 : 43   Median :6.975  
+##  Mean   :0.09154   Mean   :0.03105   2009.1 : 40   Mean   :6.168  
+##  3rd Qu.:0.00000   3rd Qu.:0.00000   2007.1 : 38   3rd Qu.:7.933  
+##  Max.   :1.00000   Max.   :1.00000   2007.2 : 35   Max.   :9.800  
+##                                      (Other):133                  
+##  codevasao  curso_nome       
+##  0:342     Length:381        
+##  1: 39     Class :character  
+##            Mode  :character  
+##                              
+##                              
+##                              
+## 
+```
+Summary dos dados de treinamento de CC
+
+```
+##      matricula        curso      totalcadeira   reprovadonota   
+##  292860458:  1   14102100:243   Min.   :1.000   Min.   :0.0000  
+##  292860461:  1                  1st Qu.:5.000   1st Qu.:0.0000  
+##  292860470:  1                  Median :6.000   Median :0.0000  
+##  292860473:  1                  Mean   :5.366   Mean   :0.1348  
+##  292860476:  1                  3rd Qu.:6.000   3rd Qu.:0.2000  
+##  292860479:  1                  Max.   :8.000   Max.   :0.8333  
+##  (Other)  :237                                                  
+##  reprovadofalta       trancado           perido       media      
+##  Min.   :0.00000   Min.   :0.00000   2009.1 :30   Min.   :0.000  
+##  1st Qu.:0.00000   1st Qu.:0.00000   2008.1 :29   1st Qu.:5.298  
+##  Median :0.00000   Median :0.00000   2006.1 :28   Median :7.000  
+##  Mean   :0.07717   Mean   :0.02332   2006.2 :24   Mean   :6.191  
+##  3rd Qu.:0.00000   3rd Qu.:0.00000   2007.2 :23   3rd Qu.:7.900  
+##  Max.   :1.00000   Max.   :1.00000   2008.2 :23   Max.   :9.775  
+##                                      (Other):86                  
+##  codevasao  curso_nome       
+##  0:215     Length:243        
+##  1: 28     Class :character  
+##            Mode  :character  
+##                              
+##                              
+##                              
+## 
+```
+Summary dos dados de treinamento de EM
+
+```
+##      matricula        curso      totalcadeira   reprovadonota    
+##  292861733:  1   11124100:138   Min.   :1.000   Min.   :0.00000  
+##  292861739:  1                  1st Qu.:6.000   1st Qu.:0.00000  
+##  292861748:  1                  Median :6.000   Median :0.00000  
+##  292861754:  1                  Mean   :5.833   Mean   :0.07874  
+##  292861757:  1                  3rd Qu.:7.000   3rd Qu.:0.14286  
+##  292861763:  1                  Max.   :8.000   Max.   :0.75000  
+##  (Other)  :132                                                   
+##  reprovadofalta      trancado           perido       media       codevasao
+##  Min.   :0.0000   Min.   :0.00000   2006.1 :21   Min.   :0.000   0:127    
+##  1st Qu.:0.0000   1st Qu.:0.00000   2006.2 :19   1st Qu.:4.956   1: 11    
+##  Median :0.0000   Median :0.00000   2007.1 :17   Median :6.807            
+##  Mean   :0.1168   Mean   :0.04467   2008.1 :14   Mean   :6.127            
+##  3rd Qu.:0.0000   3rd Qu.:0.00000   2010.2 :13   3rd Qu.:7.961            
+##  Max.   :1.0000   Max.   :1.00000   2007.2 :12   Max.   :9.800            
+##                                     (Other):42                            
+##   curso_nome       
+##  Length:138        
+##  Class :character  
+##  Mode  :character  
+##                    
+##                    
+##                    
+## 
 ```
 
-Proporção entre o numero de alunos que evadiram e que não evadiram
+Proporção entre o numero de alunos de EM e CC
+
+```
+## 
+##        CC        EM 
+## 0.6377953 0.3622047
+```
+
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png) 
+
+Proporção entre o numero de alunos quem evadiram de EM e CC e ambos
 
 ```
 ## 
@@ -38,163 +115,21 @@ Proporção entre o numero de alunos que evadiram e que não evadiram
 ## 0.8976378 0.1023622
 ```
 
-Proporção do periodo ingresso
-
-```
-##          
-##                    0          1
-##   2006.1  0.95918367 0.04081633
-##   2006.2  1.00000000 0.00000000
-##   2007.1  0.92105263 0.07894737
-##   2007.2  0.74285714 0.25714286
-##   2008.1  1.00000000 0.00000000
-##   2008.2  0.94285714 0.05714286
-##   2009.1  0.87500000 0.12500000
-##   2009.2  0.89285714 0.10714286
-##   2010.1  0.79166667 0.20833333
-##   2010.2  0.81818182 0.18181818
-##   2011.1  0.75000000 0.25000000
-```
-
-Proporção entre o numero periodo ingresso e evasão
-
-```
-##          
-##                    0          1
-##   2006.1  0.95918367 0.04081633
-##   2006.2  1.00000000 0.00000000
-##   2007.1  0.92105263 0.07894737
-##   2007.2  0.74285714 0.25714286
-##   2008.1  1.00000000 0.00000000
-##   2008.2  0.94285714 0.05714286
-##   2009.1  0.87500000 0.12500000
-##   2009.2  0.89285714 0.10714286
-##   2010.1  0.79166667 0.20833333
-##   2010.2  0.81818182 0.18181818
-##   2011.1  0.75000000 0.25000000
-```
-
-Proporção do numero de cadeiras
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png) 
 
 ```
 ## 
-##        1.0         2.0         3.0         4.0         5.0         6.0  
-## 0.020997375 0.034120735 0.036745407 0.083989501 0.112860892 0.551181102 
-##        7.0         8.0  
-## 0.152230971 0.007874016
+##         0         1 
+## 0.8847737 0.1152263
 ```
 
-Proporção entre o numero de cadeiras e evasão
-
-```
-##       
-##                 0          1
-##   1.0  0.75000000 0.25000000
-##   2.0  0.84615385 0.15384615
-##   3.0  0.78571429 0.21428571
-##   4.0  0.84375000 0.15625000
-##   5.0  0.83720930 0.16279070
-##   6.0  0.92380952 0.07619048
-##   7.0  0.93103448 0.06896552
-##   8.0  1.00000000 0.00000000
-```
-
-Para melhor visualizar melhor criei um novo campo 'mediacat' que separa as notas em:
-* 0.0 - 2.5
-* 2.5 - 5.0
-* 5.0 - 7.5
-* 7.5 - 10
-
-
-Proporção de media
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-2.png) 
 
 ```
 ## 
-## 0.0 - 2.5 2.5 - 5.0 5.0 - 7.5 7.5 - 10. 
-## 0.1128609 0.1312336 0.3963255 0.3595801
-```
-Proporção entre media e evasão
-
-```
-##            
-##                      0          1
-##   0.0 - 2.5 0.37209302 0.62790698
-##   2.5 - 5.0 0.92000000 0.08000000
-##   5.0 - 7.5 0.94701987 0.05298013
-##   7.5 - 10. 1.00000000 0.00000000
+##          0          1 
+## 0.92028986 0.07971014
 ```
 
-Para melhor visualizar melhor criei um novo campo 'reprovcat' que separa os alunos entre:
-* Reprovou nenhuma
-* Reprovou até metade
-* Reprovou mais da metade
-
-
-Proporção de reprovações
-
-```
-## 
-##     Ate metade Mais da metade        Nenhuma 
-##     0.27034121     0.07874016     0.65091864
-```
-Proporção entre reprovações e evasão
-
-```
-##                 
-##                          0         1
-##   Ate metade     0.8640777 0.1359223
-##   Mais da metade 0.8000000 0.2000000
-##   Nenhuma        0.9233871 0.0766129
-```
-
-Para melhor visualizar melhor criei um novo campo 'reprovcatf' que separa os alunos entre:
-* Reprovou nenhuma por falta
-* Reprovou até metade por falta
-* Reprovou mais da metade por falta
-
-
-Proporção de reprovações por falta
-
-```
-## 
-##     Ate metade Mais da metade        Nenhuma 
-##     0.08923885     0.08923885     0.82152231
-```
-Proporção entre reprovações por falta e evasão
-
-```
-##                 
-##                          0         1
-##   Ate metade     0.8529412 0.1470588
-##   Mais da metade 0.5000000 0.5000000
-##   Nenhuma        0.9456869 0.0543131
-```
-
-Criação de um novo campo 'tranccat' que separa os alunos entre:
-* Trancou nenhuma
-* Trancou até metade
-* Trancou mais da metade
-
-
-Proporção de trancamento
-
-```
-## 
-##     Ate metade Mais da metade        Nenhuma 
-##     0.03674541     0.02362205     0.93963255
-```
-Proporção entre trancamento e evasão
-
-```
-##                 
-##                           0          1
-##   Ate metade     0.92857143 0.07142857
-##   Mais da metade 0.22222222 0.77777778
-##   Nenhuma        0.91340782 0.08659218
-```
-
-Dessa forma resolvi colocar na árvore os atributos: Media, Reprovações por nota, Reprovações por nota e Trancamentos.
-
-![plot of chunk unnamed-chunk-20](figure/unnamed-chunk-20-1.png) 
-
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-3.png) 
 

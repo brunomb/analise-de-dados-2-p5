@@ -1,8 +1,39 @@
 library(rattle)
 library(rpart.plot)
 library(RColorBrewer)
+#importar dados de treinamento
+dados_treino_cc_em <- read.csv("~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/corretos/dadostreino.csv", sep=";")
+#dividir dados em CC, EM e CC_EM
+dados_treino_cc <- subset(dados_treino_cc_em, dados_treino_cc_em$CURSO == 14102100)
+dados_treino_em <- subset(dados_treino_cc_em, dados_treino_cc_em$CURSO == 11124100)
+#Export de dados divididos
+write.csv(dados_treino_cc, file = "~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/corretos/dados_treino_cc.csv", row.names = FALSE, quote=FALSE)
+write.csv(dados_treino_em, file = "~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/corretos/dados_treino_em.csv", row.names = FALSE, quote=FALSE)
+write.csv(dados_treino_cc_em, file = "~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/corretos/dados_treino_cc_em.csv", row.names = FALSE, quote=FALSE)
+#Tratamento dos dados em JAVA e importacao dos novos dados de treinamento
+dados_treino_cc_em_tratado <- read.csv("~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/corretos/dados_treino_cc_em_tratado.csv", sep=";")
+dados_treino_cc_tratado <- read.csv("~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/corretos/dados_treino_cc_tratado.csv", sep=";")
+dados_treino_em_tratado <- read.csv("~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/corretos/dados_treino_em_tratado.csv", sep=";")
+dados_treino_cc_em_tratado$curso_nome <- 'teste'
+dados_treino_cc_em_tratado$curso_nome[dados_treino_cc_em_tratado$curso == 14102100] <- 'CC'
+dados_treino_cc_em_tratado$curso_nome[dados_treino_cc_em_tratado$curso == 11124100] <- 'EM'
+
+#importar dados de teste
+dados_teste_cc_em <- read.csv("~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/corretos/dadosteste.csv", sep=";", row.names = FALSE)
+#dividir dados em CC, EM e CC_EM
+dados_teste_cc <- subset(dados_teste_cc_em, dados_teste_cc_em$CURSO == 14102100)
+dados_teste_em <- subset(dados_teste_cc_em, dados_teste_cc_em$CURSO == 11124100)
+#Export de dados divididos
+write.csv(dados_teste_cc, file = "~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/corretos/dados_teste_cc.csv", row.names = FALSE, quote=FALSE)
+write.csv(dados_teste_em, file = "~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/corretos/dados_teste_em.csv", row.names = FALSE, quote=FALSE)
+write.csv(dados_teste_cc_em, file = "~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/corretos/dados_teste_cc_em.csv", row.names = FALSE, quote=FALSE)
+#Tratamento dos dados em JAVA e importacao dos novos dados de treinamento
+dados_teste_cc_em_tratado <- read.csv("~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/corretos/dados_teste_cc_em_tratado.csv", sep=";")
+dados_teste_cc_tratado <- read.csv("~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/corretos/dados_teste_cc_tratado.csv", sep=";")
+dados_teste_em_tratado <- read.csv("~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/corretos/dados_teste_em_tratado.csv", sep=";")
+
+
 #Apos tartamento de tableas
-dadosTreinamento <- read.csv("~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/AAfinalDadosTreino.csv", sep=";", colClasses = c("factor", "factor", "factor", "numeric", "numeric", "numeric", "factor", "numeric", "factor"))
 summary(dadosTreinamento)
 #Verifiar proporcao entre o numero de alunos que evadiram e que não evadiram
 prop.table(table(dadosTreinamento$codevasao))

@@ -1,142 +1,101 @@
+```{r, include= FALSE}
+library(rattle)
+library(rpart.plot)
+library(RColorBrewer)
+library(plotrix)
+
+#Apos tartamento de tableas
+#importar dados de treinamento
+dados_treino_cc_em <- read.csv("~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/corretos/dadostreino.csv", sep=";", colClasses = c("factor", "factor", "factor", "factor","factor", "numeric", "factor", "factor", "factor"))
+
+#dividir dados em CC, EM e CC_EM
+dados_treino_cc <- subset(dados_treino_cc_em, dados_treino_cc_em$CURSO == 14102100)
+dados_treino_em <- subset(dados_treino_cc_em, dados_treino_cc_em$CURSO == 11124100)
+
+#Export de dados divididos
+write.csv(dados_treino_cc, file = "~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/corretos/dados_treino_cc.csv", row.names = FALSE, quote=FALSE)
+write.csv(dados_treino_em, file = "~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/corretos/dados_treino_em.csv", row.names = FALSE, quote=FALSE)
+write.csv(dados_treino_cc_em, file = "~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/corretos/dados_treino_cc_em.csv", row.names = FALSE, quote=FALSE)
+
+#Tratamento dos dados em JAVA e importacao dos novos dados de treinamento
+dados_treino_cc_em_tratado <- read.csv("~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/corretos/dados_treino_cc_em_tratado.csv", sep=";", colClasses = c("factor", "factor", "numeric", "numeric","numeric", "numeric", "factor", "numeric", "factor"))
+dados_treino_cc_em_tratado$curso_nome <- 'Teste'
+dados_treino_cc_em_tratado$curso_nome[dados_treino_cc_em_tratado$curso == 14102100] <- 'CC'
+dados_treino_cc_em_tratado$curso_nome[dados_treino_cc_em_tratado$curso == 11124100] <- 'EM'
+
+dados_treino_cc_tratado <- read.csv("~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/corretos/dados_treino_cc_tratado.csv", sep=";", colClasses = c("factor", "factor", "numeric", "numeric","numeric", "numeric", "factor", "numeric", "factor"))
+dados_treino_cc_tratado$curso_nome <- 'Teste'
+dados_treino_cc_tratado$curso_nome[dados_treino_cc_tratado$curso == 14102100] <- 'CC'
+dados_treino_cc_tratado$curso_nome[dados_treino_cc_tratado$curso == 11124100] <- 'EM'
+
+dados_treino_em_tratado <- read.csv("~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/corretos/dados_treino_em_tratado.csv", sep=";", colClasses = c("factor", "factor", "numeric", "numeric","numeric", "numeric", "factor", "numeric", "factor"))
+dados_treino_em_tratado$curso_nome <- 'Teste'
+dados_treino_em_tratado$curso_nome[dados_treino_em_tratado$curso == 14102100] <- 'CC'
+dados_treino_em_tratado$curso_nome[dados_treino_em_tratado$curso == 11124100] <- 'EM'
+
+#importar dados de teste
+dados_teste_cc_em <- read.csv("~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/corretos/dadosteste.csv", sep=";")
+#dividir dados em CC, EM e CC_EM
+dados_teste_cc <- subset(dados_teste_cc_em, dados_teste_cc_em$CURSO == 14102100)
+dados_teste_em <- subset(dados_teste_cc_em, dados_teste_cc_em$CURSO == 11124100)
+#Export de dados divididos
+write.csv(dados_teste_cc, file = "~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/corretos/dados_teste_cc.csv", row.names = FALSE, quote=FALSE)
+write.csv(dados_teste_em, file = "~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/corretos/dados_teste_em.csv", row.names = FALSE, quote=FALSE)
+write.csv(dados_teste_cc_em, file = "~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/corretos/dados_teste_cc_em.csv", row.names = FALSE, quote=FALSE)
+#Tratamento dos dados em JAVA e importacao dos novos dados de treinamento
+dados_teste_cc_em_tratado <- read.csv("~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/corretos/dados_teste_cc_em_tratado.csv", sep=";", colClasses = c("factor", "factor", "numeric", "numeric","numeric", "numeric", "factor", "numeric", "factor"))
+dados_teste_cc_em_tratado$curso_nome <- 'Teste'
+dados_teste_cc_em_tratado$curso_nome[dados_teste_cc_em_tratado$curso == 14102100] <- 'CC'
+dados_teste_cc_em_tratado$curso_nome[dados_teste_cc_em_tratado$curso == 11124100] <- 'EM'
+
+dados_teste_cc_tratado <- read.csv("~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/corretos/dados_teste_cc_tratado.csv", sep=";", colClasses = c("factor", "factor", "numeric", "numeric","numeric", "numeric", "factor", "numeric", "factor"))
+dados_teste_cc_tratado$curso_nome <- 'Teste'
+dados_teste_cc_tratado$curso_nome[dados_teste_cc_tratado$curso == 14102100] <- 'CC'
+dados_teste_cc_tratado$curso_nome[dados_teste_cc_tratado$curso == 11124100] <- 'EM'
+
+dados_teste_em_tratado <- read.csv("~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/corretos/dados_teste_em_tratado.csv", sep=";", colClasses = c("factor", "factor", "numeric", "numeric","numeric", "numeric", "factor", "numeric", "factor"))
+dados_teste_em_tratado$curso_nome <- 'Teste'
+dados_teste_em_tratado$curso_nome[dados_teste_em_tratado$curso == 14102100] <- 'CC'
+dados_teste_em_tratado$curso_nome[dados_teste_em_tratado$curso == 11124100] <- 'EM'
+```
 AD2 - Problema 05
 ========================================================
-Modificando os dados de acordo com o seguinte modelo:
+Os dados foram modificados de acordo com o seguinte modelo:
 * matricula: Matricula do aluno
 * curso: Codigo do curso
 * totalcadeira: Numero de cadeiras colocadas
 * reprovanota: Proporção de cadeiras que o aluno perdeu
 * reprovafalta: Proporção de cadeiras que o aluno perdeu por faltas
 * trancado: Proporção de cadeiras que o aluno trancou
-* periodo: Periodo de ingresso do aluno
 * media: Media das notas
 * codevasao: Codigo de evasão
 
-```{r, include= FALSE}
-library(rattle)
-library(rpart.plot)
-library(RColorBrewer)
-#Apos tartamento de tableas
-dadosTreinamento <- read.csv("~/Documentos/ufcg/analise-de-dados-2/analise-de-dados-2-p5/data/AAfinalDadosTreino.csv", sep=";", colClasses = c("factor", "factor", "factor", "numeric", "numeric", "numeric", "factor", "numeric", "factor"))
-```
+--------------------------------------------------------
+Summary dos dados de treinamento de CC e EM
 ```{r, echo=FALSE}
-head(dadosTreinamento)
+summary(dados_treino_cc_em_tratado)
 ```
-
-Proporção entre o numero de alunos que evadiram e que não evadiram
+Summary dos dados de treinamento de CC
 ```{r, echo=FALSE}
-prop.table(table(dadosTreinamento$codevasao))
+summary(dados_treino_cc_tratado)
 ```
-
-Proporção do periodo ingresso
+Summary dos dados de treinamento de EM
 ```{r, echo=FALSE}
-prop.table(table(dadosTreinamento$perido, dadosTreinamento$codevasao), 1)
+summary(dados_treino_em_tratado)
 ```
 
-Proporção entre o numero periodo ingresso e evasão
+Proporção entre o numero de alunos de EM e CC
 ```{r, echo=FALSE}
-prop.table(table(dadosTreinamento$perido, dadosTreinamento$codevasao), 1)
+prop.table(table(dados_treino_cc_em_tratado$curso_nome))
+pie3D(prop.table(table(dados_treino_cc_em_tratado$curso_nome)),   main="Grafico de pizza de numero de aluno")
 ```
 
-Proporção do numero de cadeiras
+Proporção entre o numero de alunos quem evadiram de EM e CC e ambos
 ```{r, echo=FALSE}
-prop.table(table(dadosTreinamento$totalcadeira))
+prop.table(table(dados_treino_cc_em_tratado$codevasao))
+pie3D(prop.table(table(dados_treino_cc_em_tratado$codevasao)),   main="Grafico de pizza de evasao EM e CC ")
+prop.table(table(dados_treino_cc_tratado$codevasao))
+pie3D(prop.table(table(dados_treino_cc_tratado$codevasao)),   main="Grafico de pizza de evasao CC ")
+prop.table(table(dados_treino_em_tratado$codevasao))
+pie3D(prop.table(table(dados_treino_em_tratado$codevasao)),   main="Grafico de pizza de evasao EM")
 ```
-
-Proporção entre o numero de cadeiras e evasão
-```{r, echo=FALSE}
-prop.table(table(dadosTreinamento$totalcadeira, dadosTreinamento$codevasao), 1)
-```
-
-Para melhor visualizar melhor criei um novo campo 'mediacat' que separa as notas em:
-* 0.0 - 2.5
-* 2.5 - 5.0
-* 5.0 - 7.5
-* 7.5 - 10
-
-```{r, include= FALSE}
-dadosTreinamento$mediacat <- '0'
-dadosTreinamento$mediacat[dadosTreinamento$media < 2.5] <- '0.0 - 2.5'
-dadosTreinamento$mediacat[dadosTreinamento$media < 5 & dadosTreinamento$media >= 2.5] <- '2.5 - 5.0'
-dadosTreinamento$mediacat[dadosTreinamento$media < 7.5 & dadosTreinamento$media >= 5] <- '5.0 - 7.5'
-dadosTreinamento$mediacat[dadosTreinamento$media >= 7.5] <- '7.5 - 10.'
-```
-Proporção de media
-```{r, echo=FALSE}
-prop.table(table(dadosTreinamento$mediacat))
-```
-Proporção entre media e evasão
-```{r, echo=FALSE}
-prop.table(table(dadosTreinamento$mediacat, dadosTreinamento$codevasao), 1)
-```
-
-Para melhor visualizar melhor criei um novo campo 'reprovcat' que separa os alunos entre:
-* Reprovou nenhuma
-* Reprovou até metade
-* Reprovou mais da metade
-
-```{r, include= FALSE}
-#Inserir um novo campo reprovcat
-dadosTreinamento$reprovcat <- '0'
-dadosTreinamento$reprovcat[dadosTreinamento$reprovadonota == 0] <- 'Nenhuma'
-dadosTreinamento$reprovcat[dadosTreinamento$reprovadonota < 0.5 & dadosTreinamento$reprovadonota > 0] <- 'Ate metade'
-dadosTreinamento$reprovcat[dadosTreinamento$reprovadonota >= 0.5] <- 'Mais da metade'
-```
-Proporção de reprovações
-```{r, echo=FALSE}
-prop.table(table(dadosTreinamento$reprovcat))
-```
-Proporção entre reprovações e evasão
-```{r, echo=FALSE}
-prop.table(table(dadosTreinamento$reprovcat, dadosTreinamento$codevasao), 1)
-```
-
-Para melhor visualizar melhor criei um novo campo 'reprovcatf' que separa os alunos entre:
-* Reprovou nenhuma por falta
-* Reprovou até metade por falta
-* Reprovou mais da metade por falta
-
-```{r, include= FALSE}
-#Inserir um novo campo reprovcat
-dadosTreinamento$reprovcatf <- '0'
-dadosTreinamento$reprovcatf[dadosTreinamento$reprovadofalta == 0] <- 'Nenhuma'
-dadosTreinamento$reprovcatf[dadosTreinamento$reprovadofalta < 0.5 & dadosTreinamento$reprovadofalta > 0] <- 'Ate metade'
-dadosTreinamento$reprovcatf[dadosTreinamento$reprovadofalta >= 0.5] <- 'Mais da metade'
-```
-Proporção de reprovações por falta
-```{r, echo=FALSE}
-prop.table(table(dadosTreinamento$reprovcatf))
-```
-Proporção entre reprovações por falta e evasão
-```{r, echo=FALSE}
-prop.table(table(dadosTreinamento$reprovcatf, dadosTreinamento$codevasao), 1)
-```
-
-Criação de um novo campo 'tranccat' que separa os alunos entre:
-* Trancou nenhuma
-* Trancou até metade
-* Trancou mais da metade
-
-```{r, include= FALSE}
-#Inserir um novo campo reprovcat
-dadosTreinamento$tranccat <- '0'
-dadosTreinamento$tranccat[dadosTreinamento$trancado == 0] <- 'Nenhuma'
-dadosTreinamento$tranccat[dadosTreinamento$trancado < 0.5 & dadosTreinamento$trancado > 0] <- 'Ate metade'
-dadosTreinamento$tranccat[dadosTreinamento$trancado >= 0.5] <- 'Mais da metade'
-```
-Proporção de trancamento
-```{r, echo=FALSE}
-prop.table(table(dadosTreinamento$tranccat))
-```
-Proporção entre trancamento e evasão
-```{r, echo=FALSE}
-prop.table(table(dadosTreinamento$tranccat, dadosTreinamento$codevasao), 1)
-```
-
-Dessa forma resolvi colocar na árvore os atributos: Media, Reprovações por nota, Reprovações por nota e Trancamentos.
-
-```{r, echo=FALSE}
-fit <- rpart(codevasao ~ media + reprovadofalta + reprovadonota, data=dadosTreinamento, method="class")
-fancyRpartPlot(fit)
-```
-
-

@@ -1,0 +1,108 @@
+
+Proporção entre o numero de alunos que evadiram e que não evadiram
+```{r, echo=FALSE}
+prop.table(table(dadosTreinamento$codevasao))
+pie(prop.table(table(dadosTreinamento$codevasao)))
+```
+
+  Proporção do numero de cadeiras
+```{r, echo=FALSE}
+prop.table(table(dadosTreinamento$totalcadeira))
+```
+
+Proporção entre o numero de cadeiras e evasão
+```{r, echo=FALSE}
+prop.table(table(dadosTreinamento$totalcadeira, dadosTreinamento$codevasao), 1)
+```
+
+Para melhor visualizar melhor criei um novo campo 'mediacat' que separa as notas em:
+* 0.0 - 2.5
+* 2.5 - 5.0
+* 5.0 - 7.5
+* 7.5 - 10
+
+```{r, include= FALSE}
+dadosTreinamento$mediacat <- '0'
+dadosTreinamento$mediacat[dadosTreinamento$media < 2.5] <- '0.0 - 2.5'
+dadosTreinamento$mediacat[dadosTreinamento$media < 5 & dadosTreinamento$media >= 2.5] <- '2.5 - 5.0'
+dadosTreinamento$mediacat[dadosTreinamento$media < 7.5 & dadosTreinamento$media >= 5] <- '5.0 - 7.5'
+dadosTreinamento$mediacat[dadosTreinamento$media >= 7.5] <- '7.5 - 10.'
+```
+Proporção de media
+```{r, echo=FALSE}
+prop.table(table(dadosTreinamento$mediacat))
+```
+Proporção entre media e evasão
+```{r, echo=FALSE}
+prop.table(table(dadosTreinamento$mediacat, dadosTreinamento$codevasao), 1)
+```
+
+Para melhor visualizar melhor criei um novo campo 'reprovcat' que separa os alunos entre:
+* Reprovou nenhuma
+* Reprovou até metade
+* Reprovou mais da metade
+
+```{r, include= FALSE}
+#Inserir um novo campo reprovcat
+dadosTreinamento$reprovcat <- '0'
+dadosTreinamento$reprovcat[dadosTreinamento$reprovadonota == 0] <- 'Nenhuma'
+dadosTreinamento$reprovcat[dadosTreinamento$reprovadonota < 0.5 & dadosTreinamento$reprovadonota > 0] <- 'Ate metade'
+dadosTreinamento$reprovcat[dadosTreinamento$reprovadonota >= 0.5] <- 'Mais da metade'
+```
+Proporção de reprovações
+```{r, echo=FALSE}
+prop.table(table(dadosTreinamento$reprovcat))
+```
+Proporção entre reprovações e evasão
+```{r, echo=FALSE}
+prop.table(table(dadosTreinamento$reprovcat, dadosTreinamento$codevasao), 1)
+```
+
+Para melhor visualizar melhor criei um novo campo 'reprovcatf' que separa os alunos entre:
+* Reprovou nenhuma por falta
+* Reprovou até metade por falta
+* Reprovou mais da metade por falta
+
+```{r, include= FALSE}
+#Inserir um novo campo reprovcat
+dadosTreinamento$reprovcatf <- '0'
+dadosTreinamento$reprovcatf[dadosTreinamento$reprovadofalta == 0] <- 'Nenhuma'
+dadosTreinamento$reprovcatf[dadosTreinamento$reprovadofalta < 0.5 & dadosTreinamento$reprovadofalta > 0] <- 'Ate metade'
+dadosTreinamento$reprovcatf[dadosTreinamento$reprovadofalta >= 0.5] <- 'Mais da metade'
+```
+Proporção de reprovações por falta
+```{r, echo=FALSE}
+prop.table(table(dadosTreinamento$reprovcatf))
+```
+Proporção entre reprovações por falta e evasão
+```{r, echo=FALSE}
+prop.table(table(dadosTreinamento$reprovcatf, dadosTreinamento$codevasao), 1)
+```
+
+Criação de um novo campo 'tranccat' que separa os alunos entre:
+* Trancou nenhuma
+* Trancou até metade
+* Trancou mais da metade
+
+```{r, include= FALSE}
+#Inserir um novo campo reprovcat
+dadosTreinamento$tranccat <- '0'
+dadosTreinamento$tranccat[dadosTreinamento$trancado == 0] <- 'Nenhuma'
+dadosTreinamento$tranccat[dadosTreinamento$trancado < 0.5 & dadosTreinamento$trancado > 0] <- 'Ate metade'
+dadosTreinamento$tranccat[dadosTreinamento$trancado >= 0.5] <- 'Mais da metade'
+```
+Proporção de trancamento
+```{r, echo=FALSE}
+prop.table(table(dadosTreinamento$tranccat))
+```
+Proporção entre trancamento e evasão
+```{r, echo=FALSE}
+prop.table(table(dadosTreinamento$tranccat, dadosTreinamento$codevasao), 1)
+```
+
+Dessa forma resolvi colocar na árvore os atributos: Media, Reprovações por nota, Reprovações por nota e Trancamentos.
+
+```{r, echo=FALSE}
+fit <- rpart(codevasao ~ media + reprovadofalta + reprovadonota, data=dadosTreinamento, method="class")
+fancyRpartPlot(fit)
+```
